@@ -1,4 +1,5 @@
 import pdb
+import re
 import logging
 
 from dotenv import load_dotenv
@@ -8,7 +9,6 @@ import os
 import glob
 import asyncio
 import argparse
-import os
 
 logger = logging.getLogger(__name__)
 
@@ -96,8 +96,6 @@ def resolve_sensitive_env_variables(text):
     """
     if not text:
         return text
-
-    import re
 
     # Find all $SENSITIVE_* patterns
     env_vars = re.findall(r'\$SENSITIVE_[A-Za-z0-9_]*', text)

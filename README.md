@@ -131,6 +131,16 @@ To use your local Chrome profile (avoiding re-logins):
 * ✅ **2025/01/10:** Added **Docker Setup** and persistent browser session support.
 * ✅ **2025/01/06:** Released the new, well-designed **Gradio WebUI**.
 
+## Engineering Decisions & Challenges Solved
+
+| Challenge | Decision | Why |
+|---|---|
+| Browser automation needs real-time visual feedback | Gradio WebUI with live action log streaming and screenshot display | Users must see what the agent is doing at each step to trust and debug it |
+| LLM reasoning loops can infinite-spin on complex pages | Max-iterations guard with timeout; step limit configurable via UI | Prevents runaway API costs and hung sessions when the model gets stuck |
+| Sensitive API keys in browser automation history | `$SENSITIVE_*` environment variable masking in conversation logs | Keys visible in chat history are a credential leak — masking prevents accidental exposure |
+| Different LLM providers have different tool-calling formats | Provider-specific tool schema adapter that normalizes to a common interface | The agent logic stays provider-agnostic; adding a new LLM only requires a new adapter |
+| Docker-based deployment needs to work cross-platform | Separate Dockerfiles for amd64 and arm64 with docker-compose orchestration | Apple Silicon and Linux servers use different base images — unified compose hides this |
+
 ---
 
 ## 👨‍💻 Author
